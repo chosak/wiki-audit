@@ -1,6 +1,6 @@
 # wiki-audit
 
-Extract all images embedded or linked in a GitHub wiki.
+Generate useful information from a GitHub wiki.
 
 ### Installation
 
@@ -19,8 +19,10 @@ pip install .
 
 ### Usage
 
+To dump a list of wiki pages and their images:
+
 ```
-wiki-audit https://github.com/user/repo/wiki > out.csv
+wiki-audit images https://github.com/user/repo/wiki > images.csv
 ```
 
 ### Contributing

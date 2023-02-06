@@ -100,7 +100,12 @@ def write_wiki_images(url):
     return write_dicts(generate_wiki_images(url))
 
 
-@click.command()
+@click.group()
+def cli():
+    pass
+
+
+@cli.command()
 @click.argument("url", type=str, required=True)
-def main(url):
+def images(url):
     return write_wiki_images(url)

@@ -20,6 +20,6 @@ setup(
     },
     entry_points="""
         [console_scripts]
-        wiki-audit=wiki_audit:main
+        wiki-audit=wiki_audit:cli
     """,
 )
