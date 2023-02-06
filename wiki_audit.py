@@ -30,24 +30,29 @@ def get_page_urls(html):
 
 
 def make_absolute(root_url, url):
-    return url if url.startswith("http") else f"{root_url}://{url}"
+    return url if url.startswith("http") else f"{root_url}{url}"
 
-def generate_url_images(url):
-    root_url = get_root_url(url)
-    html = get_html(url)
-    soup = BeautifulSoup(html, "html.parser")
 
+def get_page_metadata(url, soup):
     title = soup.find("h1", {"class": "gh-header-title"}).text
 
     meta = soup.find("div", {"class": "gh-header-meta"})
     last_updated_str = meta.find("relative-time")["datetime"]
     last_updated = datetime.strptime(last_updated_str, "%Y-%m-%dT%H:%M:%SZ")
 
-    page_dict = {
+    return {
         "page_url": url,
         "page_title": title,
         "page_last_updated": last_updated,
     }
+
+
+def generate_url_images(url):
+    root_url = get_root_url(url)
+    html = get_html(url)
+    soup = BeautifulSoup(html, "html.parser")
+
+    page_dict = get_page_metadata(url, soup)
 
     content = soup.find("div", {"id": "wiki-wrapper"})
 
@@ -100,6 +105,32 @@ def write_wiki_images(url):
     return write_dicts(generate_wiki_images(url))
 
 
+def generate_url_links(url):
+    root_url = get_root_url(url)
+    html = get_html(url)
+    soup = BeautifulSoup(html, "html.parser")
+
+    page_dict = get_page_metadata(url, soup)
+
+    content = soup.find("div", {"id": "wiki-wrapper"})
+
+    for link in content.find_all("a"):
+        yield {
+            **page_dict,
+            "src": make_absolute(root_url, link["href"]),
+            "text": link.text,
+        }
+
+
+def generate_wiki_links(url):
+    for page_url in generate_page_urls(url):
+        yield from generate_url_links(page_url)
+
+
+def write_wiki_links(url):
+    return write_dicts(generate_wiki_links(url))
+
+
 @click.group()
 def cli():
     pass
@@ -109,3 +140,9 @@ def cli():
 @click.argument("url", type=str, required=True)
 def images(url):
     return write_wiki_images(url)
+
+
+@cli.command()
+@click.argument("url", type=str, required=True)
+def links(url):
+    return write_wiki_links(url)

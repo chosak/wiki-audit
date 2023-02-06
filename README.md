@@ -19,10 +19,16 @@ pip install .
 
 ### Usage
 
-To dump a list of wiki pages and their images:
+To create a CSV of wiki pages and their images:
 
 ```
 wiki-audit images https://github.com/user/repo/wiki > images.csv
+```
+
+To create a CSV of wiki pages and their links:
+
+```
+wiki-audit links https://github.com/user/repo/wiki > links.csv
 ```
 
 ### Contributing
