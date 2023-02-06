@@ -16,7 +16,6 @@ setup(
         "test": [
             "black",
             "flake8",
-            "pytest",
         ],
     },
     entry_points="""

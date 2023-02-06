@@ -25,16 +25,10 @@ wiki-audit https://github.com/user/repo/wiki > out.csv
 
 ### Contributing
 
-To install necessary test dependencies:
+To install necessary development dependencies:
 
 ```
 pip install -e '.[test]'
-```
-
-To run the tests:
-
-```
-pytest
 ```
 
 To check source code formatting:
